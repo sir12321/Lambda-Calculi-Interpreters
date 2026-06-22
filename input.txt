@@ -1,0 +1,111 @@
+open Declarations
+
+(* Required tests for the assignment's pure lambda-calculus core.
+   These are closed terms and exercise the Krivine and SECD machines on the
+   fragment requested in the main part of the assignment. *)
+let core_tests = [
+  App (Abs ("x", V "x"), Abs ("y", V "y"));
+  App (App (Abs ("x", Abs ("y", V "x")), Abs ("z", V "z")), Abs ("w", V "w"));
+  App (App (Abs ("f", Abs ("x", App (V "f", V "x"))), Abs ("u", V "u")), Abs ("v", V "v"));
+  App (App (Abs ("x", Abs ("y", V "y")), Abs ("u", App (V "u", V "u"))), Abs ("z", V "z"));
+  App (Abs ("x", Abs ("y", V "x")), Abs ("k", Abs ("m", V "k")));
+  App (App (Abs ("x", Abs ("y", V "x")), Abs ("a", V "a")), Abs ("b", V "b"));
+  App (App (Abs ("x", Abs ("y", Abs ("z", App (App (V "x", V "z"), App (V "y", V "z"))))), Abs ("x", Abs ("y", V "x"))), Abs ("x", Abs ("y", V "x")));
+  App (App (Abs ("f", Abs ("g", Abs ("x", App (V "f", App (V "g", V "x"))))), Abs ("u", V "u")), Abs ("v", V "v"));
+  App (Abs ("x", App (Abs ("x", V "x"), Abs ("w", V "w"))), Abs ("z", V "z"));
+  App (Abs ("x", Abs ("y", App (V "x", V "y"))), Abs ("z", V "z"));
+  Abs ("x", V "x");
+  Abs ("x", Abs ("y", App (V "x", V "y")));
+  Abs ("a", Abs ("b", App (V "a", V "b")));
+  Abs ("x", Abs ("y", V "x"));
+  Abs ("a", Abs ("b", V "a"));
+  Abs ("x", App (V "x", V "x"));
+  Abs ("x", Abs ("y", App (V "y", V "x")));
+]
+
+(* Extra-credit tests for primitive data, syntactic sugar, and error handling.
+   These demonstrate the extended language features beyond the required core. *)
+let extension_tests = [
+  if_true_int;
+  if_false_int;
+  App (App (Abs ("x", Abs ("y", V "y")), Fst (Const (CInt 10))), Abs ("z", V "z"));
+  App (Abs ("x", Abs ("y", V "x")), Add (Const (CInt 1), Const (CInt 2)));
+  Let ("x", Abs ("z", V "z"), Let ("x", Abs ("w", V "w"), V "x"));
+  Let ("x", Const (CInt 5), Abs ("y", V "x"));
+  Add (Const (CInt 2), Mul (Const (CInt 3), Const (CInt 4)));
+  Add (Mul (Const (CInt 2), Const (CInt 3)), Mul (Const (CInt 4), Const (CInt 5)));
+  IfTE (Const (CBool false), Const (CInt 1), Add (Const (CInt 2), Const (CInt 3)));
+  IfTE (Const (CBool true), Mul (Const (CInt 3), Const (CInt 7)), Const (CInt 0));
+  Let ("x", Const (CInt 3), Add (V "x", Const (CInt 4)));
+  Let ("x", Const (CInt 1), Let ("x", Const (CInt 9), V "x"));
+  App (App (Abs ("x", Abs ("y", Pair (V "x", V "y"))), Abs ("a", V "a")), Abs ("b", Abs ("c", V "b")));
+  Fst (App (App (Abs ("x", Abs ("y", Pair (V "x", V "y"))), Abs ("a", V "a")), Abs ("b", Abs ("c", V "b"))));
+  Snd (App (App (Abs ("x", Abs ("y", Pair (V "x", V "y"))), Abs ("a", V "a")), Abs ("b", Abs ("c", V "b"))));
+  Fst (Pair (Add (Const (CInt 2), Const (CInt 3)), Mul (Const (CInt 4), Const (CInt 5))));
+  Snd (Pair (Add (Const (CInt 2), Const (CInt 3)), Mul (Const (CInt 4), Const (CInt 5))));
+  Fst (Const (CInt 10));
+  Add (Const (CBool true), Const (CInt 1));
+  Add (Const (CInt 1), Const (CBool true));
+  And (Const (CInt 1), Const (CBool false));
+  V "x";
+  App (Abs ("x", Abs ("y", V "x")), Const (CInt 5));
+  Let ("x", Const (CInt 10), Abs ("y", Add (V "x", V "y")));
+  App (App (Abs ("f", Abs ("x", App (V "f", V "x"))), Abs ("u", Add (V "u", Const (CInt 1)))), Const (CInt 41));
+  Let ("x", Const (CInt 10), App (Abs ("y", Add (V "x", V "y")), Const (CInt 5)));
+  App (App (Abs ("x", Abs ("y", Add (V "x", V "y"))), Const (CInt 4)), Const (CInt 8));
+  App (App (Abs ("x", Abs ("f", App (V "f", V "x"))), Const (CInt 7)), Abs ("z", Add (V "z", Const (CInt 1))));
+  IfTE (Const (CBool true), Const (CInt 1), Const (CInt 2));
+  IfTE (Const (CBool false), Const (CInt 1), Const (CInt 2));
+  IfTE (Const (CBool true), Const (CInt 7), Fst (Const (CInt 0)));
+  IfTE (Const (CBool false), Fst (Const (CInt 0)), Const (CInt 9));
+  Pair (Const (CInt 1), Const (CBool true));
+  App (App (Abs ("x", Abs ("y", Pair (V "x", V "y"))), Const (CInt 5)), Const (CInt 8));
+  Fst (Pair (Const (CInt 1), Const (CInt 2)));
+  Snd (Pair (Const (CInt 1), Const (CInt 2)));
+  Fst (Snd (Pair (Const (CInt 0), Pair (Const (CInt 7), Const (CInt 8)))));
+  Snd (Fst (Pair (Pair (Const (CInt 1), Pair (Const (CInt 2), Const (CInt 3))), Const (CInt 4))));
+  And (Const (CBool true), Const (CBool false));
+  And (Const (CBool true), Const (CBool true));
+  Or (Const (CBool false), Const (CBool true));
+  Or (Const (CBool false), Const (CBool false));
+  Not (Const (CBool true));
+  Not (Const (CBool false));
+  And (Not (Const (CBool false)), Const (CBool true));
+  And (Or (Const (CBool true), Const (CBool false)), Not (Const (CBool false)));
+  Mul (Add (Const (CInt 1), Const (CInt 2)), Add (Const (CInt 3), Const (CInt 4)));
+  App (Abs ("x", Mul (V "x", V "x")), Const (CInt 5));
+  App (Abs ("x", Add (V "x", V "x")), Const (CInt 6));
+  App (Abs ("x", Abs ("y", V "y")), Fst (Const (CInt 10)));
+  V "z";
+  Or (Const (CBool true), Fst (Const (CInt 0)));
+  And (Const (CBool false), Fst (Const (CInt 0)));
+  Abs ("x", And (V "x", Const (CBool false)));
+  Abs ("x", Or (V "x", Const (CBool true)));
+  Abs ("x", Not (V "x"));
+  Abs ("x", IfTE (V "x", Const (CInt 1), Const (CInt 0)));
+  Fst (Pair (Const (CInt 1), Add (Const (CInt 2), Const (CInt 3))));
+  Snd (Pair (Add (Const (CInt 2), Const (CInt 3)), Const (CInt 2)));
+  Abs ("x", Add (V "x", Const (CInt 1)));
+  Abs ("x", Mul (V "x", Const (CInt 2)));
+  IfTE (Not (Const (CBool false)), Const (CInt 10), Const (CInt 20));
+  Const (CInt 1);
+  Const (CInt 2);
+  Const (CBool true);
+  Const (CBool false);
+  Let ("x", Const (CInt 1), V "x");
+  Let ("y", Const (CInt 1), V "y");
+  Let ("x", Abs ("z", V "z"), Abs ("y", App (V "x", V "y")));
+  Let ("a", Abs ("b", V "b"), Abs ("c", App (V "a", V "c")));
+  Abs ("y", App (V "y", V "z"));
+  Let ("y", Const (CInt 2), V "y");
+  V "y";
+  Abs ("x", Pair (V "x", Const (CInt 1)));
+  Abs ("x", Fst (Pair (V "x", Const (CInt 1))));
+  Abs ("x", Snd (Pair (Const (CInt 1), V "x")));
+  Let ("p", Pair (Const (CInt 1), Const (CInt 2)), Abs ("y", V "p"));
+  Let ("x", Const (CInt 5), Abs ("y", Mul (V "x", V "y")));
+  Let ("p", Pair (Const (CInt 3), Const (CInt 4)), Fst (V "p"));
+  Let ("p", Pair (Const (CInt 3), Const (CInt 4)), Snd (V "p"))
+]
+
+let tests = core_tests @ extension_tests
