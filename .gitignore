@@ -1,0 +1,8 @@
+*.cmi
+*.cmo
+abstract-machines/lambda_interp
+lithp-type-inference/lithp_parser
+lithp-type-inference/grammar.ml
+lithp-type-inference/grammar.mli
+lithp-type-inference/lexer.ml
+lithp-type-inference/output.txt
