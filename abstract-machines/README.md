@@ -20,6 +20,7 @@ The core pure lambda calculus (`V`, `Abs`, `App`) is extended with integers, boo
 | `secd.ml` | SECD compiler and machine — `FunTable` and `ListTable` variants |
 | `input.txt` | Test expressions (compiled as the `Input` module) |
 | `main.ml` | Test driver |
+| `expected_output.txt` | Golden output checked by `make test` |
 | `Makefile` | Build commands |
 
 ## Language
@@ -93,5 +94,6 @@ Extension tests cover:
 ```bash
 make                # compile
 ./lambda_interp     # run
+make test           # compare output against expected_output.txt
 make clean          # clean build artifacts
 ```

@@ -22,6 +22,7 @@ The inference is set-based and conservative — every expression gets a `typ lis
 | `symbol.ml`, `variable.ml`, `names.mli`, `bigint.ml` | Support modules |
 | `Makefile` | Build and run targets |
 | `input.txt` | Sample input |
+| `expected_output.txt` | Golden output checked by `make test` |
 
 ## Module Design
 
@@ -68,10 +69,11 @@ The lexer emits whitespace as `WS` tokens (rather than discarding it) so the gra
 ```bash
 make
 ./lithp_parser input.txt
-# or: make run
+# or: make run   (writes output.txt)
+make test        # compare output against expected_output.txt
 ```
 
-Sample output for the included `input.txt`:
+Sample output for the first expression in `input.txt`, `(lambda (x y) x)`:
 ```
 List(2) -> Any
 ```

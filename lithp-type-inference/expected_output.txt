@@ -1,0 +1,11 @@
+List(2) -> Any
+Int
+Bool
+List(3)
+Int
+List(3)
+Int
+List(1) -> Any
+Any
+List(1) -> Any
+TypeError

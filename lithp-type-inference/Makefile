@@ -4,6 +4,8 @@ OCAMLC=ocamlc
 
 TARGET=lithp_parser
 
+.PHONY: all run clean test
+
 all: $(TARGET)
 
 run: $(TARGET)
@@ -32,3 +34,7 @@ $(TARGET): names.mli symbol.ml bigint.ml variable.ml ast.ml type_support.ml type
 
 clean:
 	rm -f $(TARGET) *.cmi *.cmo grammar.ml grammar.mli lexer.ml output.txt output2.txt
+
+test: $(TARGET)
+	./$(TARGET) input.txt | diff -u expected_output.txt -
+	@echo "lithp-type-inference: all tests passed"

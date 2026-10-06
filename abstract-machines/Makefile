@@ -33,3 +33,8 @@ clean:
 	rm -f $(TARGET) $(OBJECTS) $(INTERFACES)
 
 rebuild: clean all
+
+.PHONY: test
+test: $(TARGET)
+	./$(TARGET) | diff -u expected_output.txt -
+	@echo "abstract-machines: all tests passed"

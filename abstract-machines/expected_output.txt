@@ -1,0 +1,586 @@
+=== Required Core: Pure Lambda Calculus Machines ===
+
+Test 1: ((\x.x) (\y.y))
+  KrivineFun => (\y.y)
+  KrivineList => (\y.y)
+  SecdFun => (\y.y)
+  SecdList => (\y.y)
+
+Test 2: (((\x.(\y.x)) (\z.z)) (\w.w))
+  KrivineFun => (\z.z)
+  KrivineList => (\z.z)
+  SecdFun => (\z.z)
+  SecdList => (\z.z)
+
+Test 3: (((\f.(\x.(f x))) (\u.u)) (\v.v))
+  KrivineFun => (\v.v)
+  KrivineList => (\v.v)
+  SecdFun => (\v.v)
+  SecdList => (\v.v)
+
+Test 4: (((\x.(\y.y)) (\u.(u u))) (\z.z))
+  KrivineFun => (\z.z)
+  KrivineList => (\z.z)
+  SecdFun => (\z.z)
+  SecdList => (\z.z)
+
+Test 5: ((\x.(\y.x)) (\k.(\m.k)))
+  KrivineFun => (\y.(\k.(\m.k)))
+  KrivineList => (\y.(\k.(\m.k)))
+  SecdFun => (\y.(\k.(\m.k)))
+  SecdList => (\y.(\k.(\m.k)))
+
+Test 6: (((\x.(\y.x)) (\a.a)) (\b.b))
+  KrivineFun => (\a.a)
+  KrivineList => (\a.a)
+  SecdFun => (\a.a)
+  SecdList => (\a.a)
+
+Test 7: (((\x.(\y.(\z.((x z) (y z))))) (\x.(\y.x))) (\x.(\y.x)))
+  KrivineFun => (\z.(((\x.(\y.x)) z) ((\x.(\y.x)) z)))
+  KrivineList => (\z.(((\x.(\y.x)) z) ((\x.(\y.x)) z)))
+  SecdFun => (\z.(((\x.(\y.x)) z) ((\x.(\y.x)) z)))
+  SecdList => (\z.(((\x.(\y.x)) z) ((\x.(\y.x)) z)))
+
+Test 8: (((\f.(\g.(\x.(f (g x))))) (\u.u)) (\v.v))
+  KrivineFun => (\x.((\u.u) ((\v.v) x)))
+  KrivineList => (\x.((\u.u) ((\v.v) x)))
+  SecdFun => (\x.((\u.u) ((\v.v) x)))
+  SecdList => (\x.((\u.u) ((\v.v) x)))
+
+Test 9: ((\x.((\x.x) (\w.w))) (\z.z))
+  KrivineFun => (\w.w)
+  KrivineList => (\w.w)
+  SecdFun => (\w.w)
+  SecdList => (\w.w)
+
+Test 10: ((\x.(\y.(x y))) (\z.z))
+  KrivineFun => (\y.((\z.z) y))
+  KrivineList => (\y.((\z.z) y))
+  SecdFun => (\y.((\z.z) y))
+  SecdList => (\y.((\z.z) y))
+
+Test 11: (\x.x)
+  KrivineFun => (\x.x)
+  KrivineList => (\x.x)
+  SecdFun => (\x.x)
+  SecdList => (\x.x)
+
+Test 12: (\x.(\y.(x y)))
+  KrivineFun => (\x.(\y.(x y)))
+  KrivineList => (\x.(\y.(x y)))
+  SecdFun => (\x.(\y.(x y)))
+  SecdList => (\x.(\y.(x y)))
+
+Test 13: (\a.(\b.(a b)))
+  KrivineFun => (\a.(\b.(a b)))
+  KrivineList => (\a.(\b.(a b)))
+  SecdFun => (\a.(\b.(a b)))
+  SecdList => (\a.(\b.(a b)))
+
+Test 14: (\x.(\y.x))
+  KrivineFun => (\x.(\y.x))
+  KrivineList => (\x.(\y.x))
+  SecdFun => (\x.(\y.x))
+  SecdList => (\x.(\y.x))
+
+Test 15: (\a.(\b.a))
+  KrivineFun => (\a.(\b.a))
+  KrivineList => (\a.(\b.a))
+  SecdFun => (\a.(\b.a))
+  SecdList => (\a.(\b.a))
+
+Test 16: (\x.(x x))
+  KrivineFun => (\x.(x x))
+  KrivineList => (\x.(x x))
+  SecdFun => (\x.(x x))
+  SecdList => (\x.(x x))
+
+Test 17: (\x.(\y.(y x)))
+  KrivineFun => (\x.(\y.(y x)))
+  KrivineList => (\x.(\y.(y x)))
+  SecdFun => (\x.(\y.(y x)))
+  SecdList => (\x.(\y.(y x)))
+
+=== Extra Credit / Extensions: Primitives, Sugar, and Error Cases ===
+
+Test 18: (((\t.(\f.t)) 7) 9)
+  KrivineFun => 7
+  KrivineList => 7
+  SecdFun => 7
+  SecdList => 7
+
+Test 19: (((\t.(\f.f)) 7) 9)
+  KrivineFun => 9
+  KrivineList => 9
+  SecdFun => 9
+  SecdList => 9
+
+Test 20: (((\x.(\y.y)) (fst 10)) (\z.z))
+  KrivineFun => (\z.z)
+  KrivineList => (\z.z)
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 21: ((\x.(\y.x)) (1 + 2))
+  KrivineFun => (\y.(1 + 2))
+  KrivineList => (\y.(1 + 2))
+  SecdFun => (\y.3)
+  SecdList => (\y.3)
+
+Test 22: (let x = (\z.z) in (let x = (\w.w) in x))
+  KrivineFun => (\w.w)
+  KrivineList => (\w.w)
+  SecdFun => (\w.w)
+  SecdList => (\w.w)
+
+Test 23: (let x = 5 in (\y.x))
+  KrivineFun => (\y.5)
+  KrivineList => (\y.5)
+  SecdFun => (\y.5)
+  SecdList => (\y.5)
+
+Test 24: (2 + (3 * 4))
+  KrivineFun => 14
+  KrivineList => 14
+  SecdFun => 14
+  SecdList => 14
+
+Test 25: ((2 * 3) + (4 * 5))
+  KrivineFun => 26
+  KrivineList => 26
+  SecdFun => 26
+  SecdList => 26
+
+Test 26: (if false then 1 else (2 + 3))
+  KrivineFun => 5
+  KrivineList => 5
+  SecdFun => 5
+  SecdList => 5
+
+Test 27: (if true then (3 * 7) else 0)
+  KrivineFun => 21
+  KrivineList => 21
+  SecdFun => 21
+  SecdList => 21
+
+Test 28: (let x = 3 in (x + 4))
+  KrivineFun => 7
+  KrivineList => 7
+  SecdFun => 7
+  SecdList => 7
+
+Test 29: (let x = 1 in (let x = 9 in x))
+  KrivineFun => 9
+  KrivineList => 9
+  SecdFun => 9
+  SecdList => 9
+
+Test 30: (((\x.(\y.(pair x, y))) (\a.a)) (\b.(\c.b)))
+  KrivineFun => (pair (\a.a), (\b.(\c.b)))
+  KrivineList => (pair (\a.a), (\b.(\c.b)))
+  SecdFun => (pair (\a.a), (\b.(\c.b)))
+  SecdList => (pair (\a.a), (\b.(\c.b)))
+
+Test 31: (fst (((\x.(\y.(pair x, y))) (\a.a)) (\b.(\c.b))))
+  KrivineFun => (\a.a)
+  KrivineList => (\a.a)
+  SecdFun => (\a.a)
+  SecdList => (\a.a)
+
+Test 32: (snd (((\x.(\y.(pair x, y))) (\a.a)) (\b.(\c.b))))
+  KrivineFun => (\b.(\c.b))
+  KrivineList => (\b.(\c.b))
+  SecdFun => (\b.(\c.b))
+  SecdList => (\b.(\c.b))
+
+Test 33: (fst (pair (2 + 3), (4 * 5)))
+  KrivineFun => 5
+  KrivineList => 5
+  SecdFun => 5
+  SecdList => 5
+
+Test 34: (snd (pair (2 + 3), (4 * 5)))
+  KrivineFun => 20
+  KrivineList => 20
+  SecdFun => 20
+  SecdList => 20
+
+Test 35: (fst 10)
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("ill-formed configuration in Krivine.FunTable")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("ill-formed configuration in Krivine.ListTable")
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 36: (true + 1)
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("ill-formed configuration in Krivine.FunTable")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("ill-formed configuration in Krivine.ListTable")
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 37: (1 + true)
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("ill-formed configuration in Krivine.FunTable")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("ill-formed configuration in Krivine.ListTable")
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 38: (1 && false)
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("ill-formed configuration in Krivine.FunTable")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("ill-formed configuration in Krivine.ListTable")
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 39: x
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("unbound variable in Krivine.FunTable: x")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("unbound variable in Krivine.ListTable: x")
+  SecdFun => ERROR: Secd.FunTable.Stuck("unbound variable in Secd.FunTable: x")
+  SecdList => ERROR: Secd.ListTable.Stuck("unbound variable in Secd.ListTable: x")
+
+Test 40: ((\x.(\y.x)) 5)
+  KrivineFun => (\y.5)
+  KrivineList => (\y.5)
+  SecdFun => (\y.5)
+  SecdList => (\y.5)
+
+Test 41: (let x = 10 in (\y.(x + y)))
+  KrivineFun => (\y.(10 + y))
+  KrivineList => (\y.(10 + y))
+  SecdFun => (\y.(10 + y))
+  SecdList => (\y.(10 + y))
+
+Test 42: (((\f.(\x.(f x))) (\u.(u + 1))) 41)
+  KrivineFun => 42
+  KrivineList => 42
+  SecdFun => 42
+  SecdList => 42
+
+Test 43: (let x = 10 in ((\y.(x + y)) 5))
+  KrivineFun => 15
+  KrivineList => 15
+  SecdFun => 15
+  SecdList => 15
+
+Test 44: (((\x.(\y.(x + y))) 4) 8)
+  KrivineFun => 12
+  KrivineList => 12
+  SecdFun => 12
+  SecdList => 12
+
+Test 45: (((\x.(\f.(f x))) 7) (\z.(z + 1)))
+  KrivineFun => 8
+  KrivineList => 8
+  SecdFun => 8
+  SecdList => 8
+
+Test 46: (if true then 1 else 2)
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 47: (if false then 1 else 2)
+  KrivineFun => 2
+  KrivineList => 2
+  SecdFun => 2
+  SecdList => 2
+
+Test 48: (if true then 7 else (fst 0))
+  KrivineFun => 7
+  KrivineList => 7
+  SecdFun => 7
+  SecdList => 7
+
+Test 49: (if false then (fst 0) else 9)
+  KrivineFun => 9
+  KrivineList => 9
+  SecdFun => 9
+  SecdList => 9
+
+Test 50: (pair 1, true)
+  KrivineFun => (pair 1, true)
+  KrivineList => (pair 1, true)
+  SecdFun => (pair 1, true)
+  SecdList => (pair 1, true)
+
+Test 51: (((\x.(\y.(pair x, y))) 5) 8)
+  KrivineFun => (pair 5, 8)
+  KrivineList => (pair 5, 8)
+  SecdFun => (pair 5, 8)
+  SecdList => (pair 5, 8)
+
+Test 52: (fst (pair 1, 2))
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 53: (snd (pair 1, 2))
+  KrivineFun => 2
+  KrivineList => 2
+  SecdFun => 2
+  SecdList => 2
+
+Test 54: (fst (snd (pair 0, (pair 7, 8))))
+  KrivineFun => 7
+  KrivineList => 7
+  SecdFun => 7
+  SecdList => 7
+
+Test 55: (snd (fst (pair (pair 1, (pair 2, 3)), 4)))
+  KrivineFun => (pair 2, 3)
+  KrivineList => (pair 2, 3)
+  SecdFun => (pair 2, 3)
+  SecdList => (pair 2, 3)
+
+Test 56: (true && false)
+  KrivineFun => false
+  KrivineList => false
+  SecdFun => false
+  SecdList => false
+
+Test 57: (true && true)
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 58: (false || true)
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 59: (false || false)
+  KrivineFun => false
+  KrivineList => false
+  SecdFun => false
+  SecdList => false
+
+Test 60: (not true)
+  KrivineFun => false
+  KrivineList => false
+  SecdFun => false
+  SecdList => false
+
+Test 61: (not false)
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 62: ((not false) && true)
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 63: ((true || false) && (not false))
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 64: ((1 + 2) * (3 + 4))
+  KrivineFun => 21
+  KrivineList => 21
+  SecdFun => 21
+  SecdList => 21
+
+Test 65: ((\x.(x * x)) 5)
+  KrivineFun => 25
+  KrivineList => 25
+  SecdFun => 25
+  SecdList => 25
+
+Test 66: ((\x.(x + x)) 6)
+  KrivineFun => 12
+  KrivineList => 12
+  SecdFun => 12
+  SecdList => 12
+
+Test 67: ((\x.(\y.y)) (fst 10))
+  KrivineFun => (\y.y)
+  KrivineList => (\y.y)
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 68: z
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("unbound variable in Krivine.FunTable: z")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("unbound variable in Krivine.ListTable: z")
+  SecdFun => ERROR: Secd.FunTable.Stuck("unbound variable in Secd.FunTable: z")
+  SecdList => ERROR: Secd.ListTable.Stuck("unbound variable in Secd.ListTable: z")
+
+Test 69: (true || (fst 0))
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 70: (false && (fst 0))
+  KrivineFun => false
+  KrivineList => false
+  SecdFun => ERROR: Secd.FunTable.Stuck("ill-formed SECD configuration in Secd.FunTable")
+  SecdList => ERROR: Secd.ListTable.Stuck("ill-formed SECD configuration in Secd.ListTable")
+
+Test 71: (\x.(x && false))
+  KrivineFun => (\x.(x && false))
+  KrivineList => (\x.(x && false))
+  SecdFun => (\x.(x && false))
+  SecdList => (\x.(x && false))
+
+Test 72: (\x.(x || true))
+  KrivineFun => (\x.(x || true))
+  KrivineList => (\x.(x || true))
+  SecdFun => (\x.(x || true))
+  SecdList => (\x.(x || true))
+
+Test 73: (\x.(not x))
+  KrivineFun => (\x.(not x))
+  KrivineList => (\x.(not x))
+  SecdFun => (\x.(not x))
+  SecdList => (\x.(not x))
+
+Test 74: (\x.(if x then 1 else 0))
+  KrivineFun => (\x.(if x then 1 else 0))
+  KrivineList => (\x.(if x then 1 else 0))
+  SecdFun => (\x.(if x then 1 else 0))
+  SecdList => (\x.(if x then 1 else 0))
+
+Test 75: (fst (pair 1, (2 + 3)))
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 76: (snd (pair (2 + 3), 2))
+  KrivineFun => 2
+  KrivineList => 2
+  SecdFun => 2
+  SecdList => 2
+
+Test 77: (\x.(x + 1))
+  KrivineFun => (\x.(x + 1))
+  KrivineList => (\x.(x + 1))
+  SecdFun => (\x.(x + 1))
+  SecdList => (\x.(x + 1))
+
+Test 78: (\x.(x * 2))
+  KrivineFun => (\x.(x * 2))
+  KrivineList => (\x.(x * 2))
+  SecdFun => (\x.(x * 2))
+  SecdList => (\x.(x * 2))
+
+Test 79: (if (not false) then 10 else 20)
+  KrivineFun => 10
+  KrivineList => 10
+  SecdFun => 10
+  SecdList => 10
+
+Test 80: 1
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 81: 2
+  KrivineFun => 2
+  KrivineList => 2
+  SecdFun => 2
+  SecdList => 2
+
+Test 82: true
+  KrivineFun => true
+  KrivineList => true
+  SecdFun => true
+  SecdList => true
+
+Test 83: false
+  KrivineFun => false
+  KrivineList => false
+  SecdFun => false
+  SecdList => false
+
+Test 84: (let x = 1 in x)
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 85: (let y = 1 in y)
+  KrivineFun => 1
+  KrivineList => 1
+  SecdFun => 1
+  SecdList => 1
+
+Test 86: (let x = (\z.z) in (\y.(x y)))
+  KrivineFun => (\y.((\z.z) y))
+  KrivineList => (\y.((\z.z) y))
+  SecdFun => (\y.((\z.z) y))
+  SecdList => (\y.((\z.z) y))
+
+Test 87: (let a = (\b.b) in (\c.(a c)))
+  KrivineFun => (\c.((\b.b) c))
+  KrivineList => (\c.((\b.b) c))
+  SecdFun => (\c.((\b.b) c))
+  SecdList => (\c.((\b.b) c))
+
+Test 88: (\y.(y z))
+  KrivineFun => (\y.(y z))
+  KrivineList => (\y.(y z))
+  SecdFun => (\y.(y z))
+  SecdList => (\y.(y z))
+
+Test 89: (let y = 2 in y)
+  KrivineFun => 2
+  KrivineList => 2
+  SecdFun => 2
+  SecdList => 2
+
+Test 90: y
+  KrivineFun => ERROR: Krivine.FunTable.Stuck("unbound variable in Krivine.FunTable: y")
+  KrivineList => ERROR: Krivine.ListTable.Stuck("unbound variable in Krivine.ListTable: y")
+  SecdFun => ERROR: Secd.FunTable.Stuck("unbound variable in Secd.FunTable: y")
+  SecdList => ERROR: Secd.ListTable.Stuck("unbound variable in Secd.ListTable: y")
+
+Test 91: (\x.(pair x, 1))
+  KrivineFun => (\x.(pair x, 1))
+  KrivineList => (\x.(pair x, 1))
+  SecdFun => (\x.(pair x, 1))
+  SecdList => (\x.(pair x, 1))
+
+Test 92: (\x.(fst (pair x, 1)))
+  KrivineFun => (\x.(fst (pair x, 1)))
+  KrivineList => (\x.(fst (pair x, 1)))
+  SecdFun => (\x.(fst (pair x, 1)))
+  SecdList => (\x.(fst (pair x, 1)))
+
+Test 93: (\x.(snd (pair 1, x)))
+  KrivineFun => (\x.(snd (pair 1, x)))
+  KrivineList => (\x.(snd (pair 1, x)))
+  SecdFun => (\x.(snd (pair 1, x)))
+  SecdList => (\x.(snd (pair 1, x)))
+
+Test 94: (let p = (pair 1, 2) in (\y.p))
+  KrivineFun => (\y.(pair 1, 2))
+  KrivineList => (\y.(pair 1, 2))
+  SecdFun => (\y.(pair 1, 2))
+  SecdList => (\y.(pair 1, 2))
+
+Test 95: (let x = 5 in (\y.(x * y)))
+  KrivineFun => (\y.(5 * y))
+  KrivineList => (\y.(5 * y))
+  SecdFun => (\y.(5 * y))
+  SecdList => (\y.(5 * y))
+
+Test 96: (let p = (pair 3, 4) in (fst p))
+  KrivineFun => 3
+  KrivineList => 3
+  SecdFun => 3
+  SecdList => 3
+
+Test 97: (let p = (pair 3, 4) in (snd p))
+  KrivineFun => 4
+  KrivineList => 4
+  SecdFun => 4
+  SecdList => 4
+
